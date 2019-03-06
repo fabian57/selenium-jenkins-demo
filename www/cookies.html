@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Selenium Demo</title>
+</head>
+<body onload="checkCookie()">
+<p id="demo"></p>
+</body>
+</html>
+
+<script>
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  var cookie = getCookie("selenium");
+  if (cookie == "") {
+    document.getElementById("demo").innerHTML = "No cookie set";
+  } else {
+    document.getElementById("demo").innerHTML = "Value of selenium cookie is: " + cookie;
+  }
+} 
+</script>
