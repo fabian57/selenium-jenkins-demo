@@ -27,9 +27,8 @@ public class SeleniumHelloWorld {
         FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(true);
 		driver = new FirefoxDriver(options);
-		//baseUrl = "http://127.0.0.1/index.html";
-		//baseUrl = "http://192.168.1.33/index.html";
-		baseUrl = "http://10.9.40.140/index.html";
+
+		baseUrl = System.getProperty("containerIP", "http://127.0.0.1:8080/index.html");
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();

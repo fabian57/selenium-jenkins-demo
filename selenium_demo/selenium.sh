@@ -1,13 +1,12 @@
-#set -euo pipefail
-#IFS=$'\n\t'
+set -euo pipefail
+IFS=$'\n\t'
 
 cp=".:./lib/*"
 bin="./bin"
 
-mkdir -p bin
-
 #sudo systemctl start nginx && 
-#    cp -r ./www/* /usr/share/nginx/html &&
+    # when launching nginx container give it --name "selenium_site"
+    ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' selenium_site)
     javac -cp "$cp:$bin" -d "$bin" src/SeleniumHelloWorld.java &&
-    java -cp "$cp:$bin" org.testng.TestNG testng.xml;
+    java -DcontainerIP="http://${ip}/index.html" -cp "$cp:$bin" org.testng.TestNG testng.xml;
 #sudo systemctl stop nginx
