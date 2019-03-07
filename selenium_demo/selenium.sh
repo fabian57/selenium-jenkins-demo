@@ -1,5 +1,5 @@
-set -euo pipefail
-IFS=$'\n\t'
+#set -euo pipefail
+#IFS=$'\n\t'
 
 cp=".:./lib/*"
 bin="./bin"
