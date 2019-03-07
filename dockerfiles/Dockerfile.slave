@@ -27,6 +27,10 @@ RUN apt-get -q update &&\
 RUN apt-get -q update &&\
 	apt-get install -y git
 
+# Install firefox
+RUN apt-get -q update &&\
+    apt-get install -y firefox=59.0.2+build1-0ubuntu1
+
 
 # Set user jenkins to the image
 RUN useradd -m -d /home/jenkins -s /bin/sh jenkins &&\
