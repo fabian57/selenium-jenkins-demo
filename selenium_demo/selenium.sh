@@ -1,6 +1,8 @@
 #set -euo pipefail
 #IFS=$'\n\t'
 
+mkdir -p bin
+
 cp=".:./lib/*"
 bin="./bin"
 
