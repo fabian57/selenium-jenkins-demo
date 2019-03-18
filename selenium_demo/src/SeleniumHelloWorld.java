@@ -1,4 +1,5 @@
 import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -22,13 +23,13 @@ public class SeleniumHelloWorld {
 	@BeforeClass
 	public void setupClass() {
 		// Notwendig wenn geckodriver nicht im Pfad ist
-		System.setProperty("webdriver.gecko.driver", "lib/geckodriver");
+		// System.setProperty("webdriver.gecko.driver", "lib/geckodriver");
 
         FirefoxOptions options = new FirefoxOptions();
         options.setHeadless(true);
 		driver = new FirefoxDriver(options);
 
-		baseUrl = System.getProperty("containerIP", "http://127.0.0.1:8080/index.html");
+		baseUrl = System.getProperty("containerURL");
 
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
@@ -48,16 +49,14 @@ public class SeleniumHelloWorld {
 		Assert.assertTrue(condition);
 	}
 
-	// Only works on running server because the cookie is only valid on the domain
-	// With the current implementation of the demo site, the cookie test happens on a different page than index
 	@Test
 	public void testBrokenLink() {
 		WebElement brokenLink = driver.findElement(By.linkText("This link should be broken"));
 		// WebElement brokenLink = driver.findElement(By.partialLinkText("be broken"));
 		brokenLink.click();
 
-		boolean condition = driver.getPageSource().contains("Success");
-		Assert.assertTrue(!condition);
+		boolean condition = driver.getTitle().contains("404");
+		Assert.assertTrue(condition);
 	}
 
 	@Test
@@ -109,6 +108,32 @@ public class SeleniumHelloWorld {
 		submit.click();
 
 		boolean condition = driver.findElement(By.xpath("//header")).getText().contains("User deleted successfully");
+		Assert.assertTrue(condition);
+	}
+
+    @Test
+	public void testCreateUserError() {
+		WebElement name = driver.findElement(By.id("Name"));
+		WebElement address = driver.findElement(By.id("Address"));
+		Select cities = new Select(driver.findElement(By.tagName("select")));
+		WebElement age = driver.findElement(By.id("Age"));
+		WebElement male = driver.findElement(By.id("Male"));
+		WebElement newsletter = driver.findElement(By.id("Newsletter"));
+		WebElement submit = driver.findElement(By.id("create"));
+
+		address.sendKeys("Bar");
+		cities.selectByVisibleText("Metz");
+		age.sendKeys("42");
+		male.click();
+		newsletter.click();
+		submit.click();
+		
+        List<WebElement> errors = driver.findElements(By.className("error"));
+
+        WebElement nameError = errors.get(0);
+
+        boolean condition = nameError.getText().contains("Name cannot be empty");
+		
 		Assert.assertTrue(condition);
 	}
 
